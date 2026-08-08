@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { Storage } from '../services/storage';
+import { FirebaseService } from '../services/firebase';
 import { Task } from '../models/task';
 import { Category } from '../models/category';
 import { AlertController } from '@ionic/angular/standalone';
@@ -24,13 +25,18 @@ export class HomePage implements OnInit {
   newTaskCategoryId: string = ''; 
   filterCategoryId: string = 'all'; 
 
+  isCategoryEnabled: boolean = true;
+
   constructor(
     private storageService: Storage,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private firebaseService: FirebaseService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.cargarData();
+    this.isCategoryEnabled = await this.firebaseService.isFeatureEnabled('habilitar_categorias');
+    console.log('¿Categorías habilitadas por Firebase?:', this.isCategoryEnabled);
   }
 
   cargarData() {
@@ -75,6 +81,7 @@ export class HomePage implements OnInit {
 
  
   async anCategory() {
+    if (!this.isCategoryEnabled) return;
     const alert = await this.alertController.create({
       header: 'Nueva Categoría',
       inputs: [
