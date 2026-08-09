@@ -30,3 +30,21 @@
   text-decoration: line-through;
   color: var(--ion-color-medium);
 }
+
+.delete-button {
+  --color: #777b85;
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+}
+
+
+.delete-button ion-icon {
+  font-size: 20px;
+}
+
+
+.delete-button:hover {
+  --color: #e05260;
+}
